@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Status - Smart Logistics</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #2a5298;
+        }
+
+        input, select {
+            padding: 12px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42,82,152,0.3);
+        }
+
+        button {
+            padding: 12px 24px;
+            margin-top: 20px;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #5b86e5, #36d1dc);
+            transform: scale(1.02);
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid white;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background: white;
+            color: #2a5298;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #22c55e;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            overflow-x: auto;
+            font-size: 13px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Update Shipment Status</h1>
+
+<div class="card">
+    <h3>Enter Shipment Details</h3>
+    <input id="updateId" placeholder="Shipment ID" type="number" required>
+    <select id="status" required>
+        <option value="">Select Status</option>
+        <option value="PickedUp">Picked Up</option>
+        <option value="InTransit">In Transit</option>
+        <option value="OutForDelivery">Out for Delivery</option>
+        <option value="Delivered">Delivered</option>
+    </select>
+    <button onclick="updateStatus()">Update Status</button>
+</div>
+
+<div id="output" style="display: none;">
+    <pre id="result"></pre>
+</div>
+
+<a href="index.html" class="back-link">← Back to Home</a>
+
+<script>
+function updateStatus() {
+    const id = document.getElementById('updateId').value.trim();
+    const status = document.getElementById('status').value;
+
+    if (!id || !status) {
+        alert('Please fill in both shipment ID and select a status.');
+        return;
+    }
+
+    fetch(`/shipments/${id}?status=${status}`, {
+        method: 'PUT'
+    })
+    .then(res => {
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return res.json().then(data => {
+                document.getElementById('output').style.display = 'block';
+                document.getElementById('result').innerText = 'Status updated successfully!\n\n' + JSON.stringify(data, null, 2);
+            });
+        } else {
+            return res.text().then(text => {
+                document.getElementById('output').style.display = 'block';
+                document.getElementById('result').innerText = text;
+            });
+        }
+    })
+    .catch(err => {
+        document.getElementById('output').style.display = 'block';
+        document.getElementById('result').innerText = 'Error: ' + err.message;
+    });
+}
+</script>
+
+</body>
+</html>

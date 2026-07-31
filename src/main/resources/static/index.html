@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Logistics Delivery Tracking System</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: #2a5298;
+            width: 200px;
+            text-align: center;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .nav-card p {
+            margin: 10px 0 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Smart Logistics Delivery Tracking System</h1>
+
+<div class="nav-container">
+    <a href="create.html" class="nav-card">
+        <h3>Create Shipment</h3>
+        <p>Create a new shipment with source and destination</p>
+    </a>
+
+    <a href="update.html" class="nav-card">
+        <h3>Update Status</h3>
+        <p>Update the status of an existing shipment</p>
+    </a>
+
+    <a href="track.html" class="nav-card">
+        <h3>Track Shipment</h3>
+        <p>Track shipment details and status logs</p>
+    </a>
+</div>
+
+</body>
+</html>
