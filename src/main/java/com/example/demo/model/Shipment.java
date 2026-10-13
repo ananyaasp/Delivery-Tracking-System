@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,11 +17,13 @@ public class Shipment {
 
     private String sourceAddress;
     private String destinationAddress;
-    private String status;
+
+    @Convert(converter = ShipmentStatusConverter.class)
+    private ShipmentStatus status;
 
     @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<StatusLog> logs;
+    private List<StatusLog> logs = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "agent_id")
@@ -29,14 +32,22 @@ public class Shipment {
 
     public Shipment() {}
 
-    public Shipment(String sourceAddress, String destinationAddress, String status) {
+    public Shipment(String sourceAddress, String destinationAddress, ShipmentStatus status) {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.status = status;
     }
 
+    public Shipment(String sourceAddress, String destinationAddress, String status) {
+        this(sourceAddress, destinationAddress, status != null ? ShipmentStatus.fromString(status) : ShipmentStatus.CREATED);
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSourceAddress() {
@@ -55,12 +66,24 @@ public class Shipment {
         this.destinationAddress = destinationAddress;
     }
 
-    public String getStatus() {
+    public ShipmentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ShipmentStatus status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status != null ? ShipmentStatus.fromString(status) : null;
+    }
+
+    public List<StatusLog> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<StatusLog> logs) {
+        this.logs = logs;
     }
 
     public DeliveryAgent getAgent() {

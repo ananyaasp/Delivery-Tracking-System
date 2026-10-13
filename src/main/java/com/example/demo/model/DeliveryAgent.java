@@ -13,6 +13,10 @@ public class DeliveryAgent {
     private String phone;
     private boolean available = true;
 
+    @Version
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
+    private Long version = 0L;
+
     public DeliveryAgent() {
     }
 
@@ -24,6 +28,10 @@ public class DeliveryAgent {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -48,5 +56,13 @@ public class DeliveryAgent {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
